@@ -1,0 +1,51 @@
+@font-face {
+    font-family:'nova';
+    src: url('../nova.otf') format('truetype')
+}
+
+.home {
+    font-size: 20px;
+    font-weight: bold;
+    background: #0f0e17;    
+    color: white;
+    width: 100vw;
+    height: 100vh;
+    text-align: center;
+    cursor: default;
+    padding: 20px;
+}
+
+.logo-home {
+    font-size: 100px;
+    margin-bottom: 40px;
+}
+
+.characters-home {
+    margin-top: 10px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 20px;
+    font-weight: bold;
+
+
+}
+
+.home > * > button {
+    border: 0px;
+    border-radius: 5px;
+    height: 50px;
+    width: 200px;
+    cursor: pointer;
+    font-size: 20px;
+    margin-top: 30px;
+    background: #ff8906;
+    color: #fffffe;
+    font-family: 'nova';
+    font-weight: bold;
+}
+
+.home > * > button:hover {
+    background: #ffa63f;
+
+}
