@@ -51,6 +51,7 @@ function App() {
   const [characters, setCharacters] = React.useState(JSON.parse(JSON.stringify(charactersArray)));
   const [isRunning, setIsRunning] = React.useState(false);
   const [foundCharacter, setFoundCharacter] = React.useState(null)
+ 
 
   const updateTargetPosition = (e) => {
     const targetWidth = 50;
@@ -60,37 +61,51 @@ function App() {
     setCircleX(centerX);
     setCircleY(centerY);
   }
-
-  const checkCharacterClicked = (e) => {
-    let xClicked = e.clientX + window.scrollX;
-    let yClicked = e.clientY + window.scrollY;
-    console.log('x:',xClicked, 'y:', yClicked);
-    characters.forEach(character => {
-      if(
-        circleX < character.xMax && 
-        circleX > character.xMin && 
-        circleY < character.yMax && 
-        circleY > character.yMin
-        ) {
-          console.log('target is on ', character.name)
-      }    
-  })
-}
   
   const updateClickedCharacter = () => {
     let newChar = '';
     characters.forEach(character => {
       if(
-        circleX < character.xMax && 
-        circleX > character.xMin && 
-        circleY < character.yMax && 
-        circleY > character.yMin
+        circleX +25< character.xMax && 
+        circleX +25> character.xMin && 
+        circleY +25 - 131 < character.yMax && 
+        circleY +25- 131 > character.yMin
         ) {
           newChar = character.name
           setClickedCharacter(newChar);
       }    
     })
   }  
+
+  const updateCharactersPositions = () => {
+    let newCharacters =[...characters]
+    let imgWidth = document.querySelector('#background').offsetWidth
+    let imgHeight = document.querySelector('#background').offsetHeight
+    newCharacters.forEach(character => {
+      if(character.name === 'Courage') {
+        character.xMin = imgWidth*0.3
+        character.xMax = imgWidth*0.33
+        character.yMin = imgHeight*0.507
+        character.yMax = imgHeight*0.532
+      }
+      if(character.name === 'Crash') {
+        character.xMin = imgWidth*0.644
+        character.xMax = imgWidth*0.673
+        character.yMin = imgHeight*0.456
+        character.yMax = imgHeight*0.484
+      }
+      if(character.name === 'Gandalf') {
+        character.xMin = imgWidth*0.576
+        character.xMax = imgWidth*0.606
+        character.yMin = imgHeight*0.354
+        character.yMax = imgHeight*0.379
+      }
+    })
+    setCharacters([...newCharacters])
+    console.log('characters position updated.')
+
+
+  }
 
   const charClick = (e) => {
     setPopupCharacter(e.target.textContent);
@@ -101,14 +116,12 @@ function App() {
   }
 
   const handleClick = (e) => {
-    console.log(document.getElementById('background').getBoundingClientRect())
-    let imgCurWidth = document.getElementById('background').getBoundingClientRect().width;
-    let courageXmin = imgCurWidth*0.299
-    let courageXmax = imgCurWidth*0.328
+    updateCharactersPositions()
     setShowPopup(true);
     updateTargetPosition(e)
-    checkCharacterClicked(e)
-    
+    console.log(characters[0])
+    console.log('x:',e.clientX + window.scrollX, 'y:',e.clientY + window.scrollY)
+    console.log('img width: ', document.querySelector('#background').offsetWidth, 'img height: ', document.querySelector('#background').offsetHeight)
   }
 
   function startGame() {
@@ -122,6 +135,7 @@ function App() {
     setFoundCharacter(null);
     setClickedCharacter(null);
     setPopupCharacter(null);
+
   }
 
   React.useEffect( () => {
@@ -153,10 +167,6 @@ function App() {
 
   },[popupCharacter, clickedCharacter])
 
-  React.useEffect(() => {
-    console.log('foundCharacter: ', foundCharacter)},[foundCharacter]
-  )
-  
   return (
     <BrowserRouter>            
     <div className='app'>
@@ -170,7 +180,12 @@ function App() {
                                         y={circleY + 25}/>}
       <Routes>
         <Route path='/'element={<Home characters={characters} startGame={startGame} />}/>
-        <Route path='/main' element={<Main startGame={startGame} foundCharacter={foundCharacter} stopGame={stopGame} characters={characters} isRunning={isRunning} handleClick={handleClick}/>}/>
+        <Route path='/main' element={<Main startGame={startGame} 
+                                           foundCharacter={foundCharacter} 
+                                           stopGame={stopGame} 
+                                           characters={characters} 
+                                           isRunning={isRunning} 
+                                           handleClick={handleClick}/>}/>
       </Routes>
     </div>
     </BrowserRouter>  

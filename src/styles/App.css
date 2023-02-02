@@ -24,8 +24,7 @@ body{
 #background {    
     position: relative;
     top: 131px;
-    z-index: -1;
-    width: 100%;
+    width: 100vw;
 
 }
 

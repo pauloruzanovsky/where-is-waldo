@@ -16,13 +16,14 @@ export const Header = styled.div `
     top: 0;
     left: 0;
     height: 131px;
+    z-index: 3;
 `
 
 export const Target = styled.div`
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    border: 3px dashed #ff8906;
+    border: 2px solid #ff8906;
     display: flex;
     background: rgba(0,0,0,0.2);
     align-items: center;
@@ -31,6 +32,7 @@ export const Target = styled.div`
     position: absolute;
     top: ${props => props.y}px;
     left: ${props => props.x}px;
+    z-index: 2;
 `
 
 export const TargetDot = styled.div`
@@ -47,4 +49,5 @@ export const CharacterPopup = styled.div`
     position: absolute;
     top: ${props => props.y}px;
     left: ${props => props.x}px;
+    z-index: 2;
 `

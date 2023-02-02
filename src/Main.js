@@ -26,16 +26,20 @@ export default function Main(props) {
   },[gsReference])
 
   React.useEffect(() => {
-    props.startGame()
   }, []);
 
+  const onLoad = () => {
+    props.startGame()
+  }
+  
+  const ruzinha = (e) => {
+    console.log('hi')
+  }
+
     return(
-        <div>
+        <div className='main'>
             <Header foundCharacter={props.foundCharacter} stopGame={props.stopGame} characters={props.characters} isRunning={props.isRunning} />
-            <div className='img-container'>
-            <img onClick={props.handleClick} id='background' alt='background'/>
-            <div className='courage-box'>I'm courage</div>
-            </div>
+            <img onLoad={onLoad} onClick={props.handleClick} id='background' alt='background'/>
         </div>
 
     )

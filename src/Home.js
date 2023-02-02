@@ -25,7 +25,7 @@ export default function Home(props) {
                 {characterElements}
             </div>
             <Link to='/main'>
-                <button onClick={props.startGame} className='start-button'>Start</button>
+                <button className='start-button'>Start</button>
             </Link>
         </div>
     )
