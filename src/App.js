@@ -1,5 +1,4 @@
 import React from "react";
-import Header from './Header'
 import * as S from './styles/style'
 import './styles/App.css'
 import CharacterSelection from './CharacterSelection'
@@ -51,13 +50,18 @@ function App() {
   const [characters, setCharacters] = React.useState(JSON.parse(JSON.stringify(charactersArray)));
   const [isRunning, setIsRunning] = React.useState(false);
   const [foundCharacter, setFoundCharacter] = React.useState(null)
- 
+  const [isGameOver, setIsGameOver] = React.useState(false)
+  const [targetWidth, setTargetWidth] = React.useState(50)
+  const [targetHeight, setTargetHeight] = React.useState(50)
 
   const updateTargetPosition = (e) => {
-    const targetWidth = 50;
-    const targetHeight = 50;
-    const centerX = (e.clientX + window.scrollX - targetWidth/2)
-    const centerY = (e.clientY + window.scrollY - targetHeight/2)
+    const newTargetWidth = 50/2347*document.querySelector('#background').offsetWidth
+    const newTargetHeight = 50/(3318+131)*document.querySelector('#background').offsetHeight;
+    const centerX = (e.clientX + window.scrollX - newTargetWidth/2)
+    const centerY = (e.clientY + window.scrollY - newTargetHeight/2)
+
+    setTargetWidth(newTargetWidth)
+    setTargetHeight(newTargetHeight)
     setCircleX(centerX);
     setCircleY(centerY);
   }
@@ -66,10 +70,10 @@ function App() {
     let newChar = '';
     characters.forEach(character => {
       if(
-        circleX +25< character.xMax && 
-        circleX +25> character.xMin && 
-        circleY +25 - 131 < character.yMax && 
-        circleY +25- 131 > character.yMin
+        circleX + targetWidth/2 < character.xMax && 
+        circleX + targetWidth/2 > character.xMin && 
+        circleY + targetHeight/2 - 131 < character.yMax && 
+        circleY + targetHeight/2- 131 > character.yMin
         ) {
           newChar = character.name
           setClickedCharacter(newChar);
@@ -138,6 +142,13 @@ function App() {
 
   }
 
+  function gameOver() { 
+    setIsGameOver(true);
+    setIsRunning(false);
+
+
+  }
+
   React.useEffect( () => {
     
     if(!clickedCharacter) {
@@ -167,10 +178,24 @@ function App() {
 
   },[popupCharacter, clickedCharacter])
 
+  React.useEffect(() => {
+    let count = 0
+    if(!showPopup) {
+      characters.forEach(character => {
+        if(character.found) {
+           count++
+        } 
+      })
+      if(count === 3) {
+        gameOver()
+      }
+    }
+  },[showPopup])
+
   return (
     <BrowserRouter>            
     <div className='app'>
-      {showPopup && <S.Target onClick={handleClick} className='target' x={circleX} y={circleY}>
+      {showPopup && <S.Target onClick={handleClick} className='target' targetWidth={targetWidth} targetHeight={targetHeight} x={circleX} y={circleY}>
         <S.TargetDot/>  
       </S.Target>}
       {showPopup && <CharacterSelection showPopup = {showPopup} 
@@ -179,13 +204,14 @@ function App() {
                                         x ={circleX + 60} 
                                         y={circleY + 25}/>}
       <Routes>
-        <Route path='/'element={<Home characters={characters} startGame={startGame} />}/>
+        <Route path='/'element={<Home characters={characters} setIsGameOver = {setIsGameOver} startGame={startGame} />}/>
         <Route path='/main' element={<Main startGame={startGame} 
                                            foundCharacter={foundCharacter} 
                                            stopGame={stopGame} 
                                            characters={characters} 
                                            isRunning={isRunning} 
-                                           handleClick={handleClick}/>}/>
+                                           handleClick={handleClick}
+                                           isGameOver={isGameOver}/>}/>
       </Routes>
     </div>
     </BrowserRouter>  
