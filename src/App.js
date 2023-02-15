@@ -2,18 +2,16 @@ import React from "react";
 import * as S from './styles/style'
 import './styles/App.css'
 import CharacterSelection from './CharacterSelection'
-import courage from './img/courage.png'
-import crash from './img/crash.png'
-import gandalf from './img/gandalf.png'
 import Home from './Home'
+import Scores from './Scores'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Main from './Main'
-
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import {initializeApp} from 'firebase/app'
 
 export const charactersArray = [
   {
     name: 'Courage',
-    image: courage,
     xMin:890,
     xMax:950,
     yMin:1500,
@@ -22,7 +20,6 @@ export const charactersArray = [
   },
   {
     name: 'Crash',
-    image: crash,
     xMin:1540,
     xMax:1615,
     yMin:1380,
@@ -31,7 +28,6 @@ export const charactersArray = [
   },
   {
     name: 'Gandalf',
-    image: gandalf,
     xMin:1410,
     xMax:1490,
     yMin:1090,
@@ -40,8 +36,25 @@ export const charactersArray = [
   }
 ]
 
-function App() {
+const firebaseConfig = {
+  apiKey: "AIzaSyD2Sg8El0-g0-ihJ36ZStiMfCyhFnjk4ZI",
+  authDomain: "whereiswaldo-3572e.firebaseapp.com",
+  projectId: "whereiswaldo-3572e",
+  storageBucket: "whereiswaldo-3572e.appspot.com",
+  messagingSenderId: "166604569514",
+  appId: "1:166604569514:web:fdae9602f76d38c8dec9d3"
 
+};
+
+export const app = initializeApp(firebaseConfig);
+
+const storage = getStorage(app)
+const courageRef = ref(storage, 'gs://whereiswaldo-3572e.appspot.com/courage.png')
+const crashRef = ref(storage, 'gs://whereiswaldo-3572e.appspot.com/crash.png')
+const gandalfRef = ref(storage, 'gs://whereiswaldo-3572e.appspot.com/gandalf.png')
+
+
+function App() {
   const [showPopup, setShowPopup] = React.useState(false);
   const [circleX, setCircleX] = React.useState(0);
   const [circleY, setCircleY] = React.useState(0);
@@ -130,6 +143,8 @@ function App() {
 
   function startGame() {
     setIsRunning(true);
+    setIsGameOver(false);
+   
 }
 
   function stopGame() {
@@ -139,15 +154,24 @@ function App() {
     setFoundCharacter(null);
     setClickedCharacter(null);
     setPopupCharacter(null);
-
+    let time = document.querySelector('.time');
+    console.log(time.textContent);
   }
 
+  
   function gameOver() { 
     setIsGameOver(true);
-    setIsRunning(false);
+    stopGame()
 
 
   }
+
+  const restart = () => {
+    setCharacters(JSON.parse(JSON.stringify(charactersArray)));
+    startGame()
+    setIsGameOver(false)
+  }
+
 
   React.useEffect( () => {
     
@@ -192,6 +216,27 @@ function App() {
     }
   },[showPopup])
 
+  console.log('last characters array: ', characters)
+
+  React.useEffect(() => {
+
+  getDownloadURL(courageRef).then((url) => {
+    charactersArray[0].image = url;
+  })
+
+  getDownloadURL(crashRef).then((url) => {
+    charactersArray[1].image = url;
+  })
+
+  getDownloadURL(gandalfRef).then((url) => {
+    charactersArray[2].image = url
+  }).then( () => {
+    setCharacters(JSON.parse(JSON.stringify(charactersArray)))
+
+  })
+
+  },[])
+
   return (
     <BrowserRouter>            
     <div className='app'>
@@ -211,7 +256,9 @@ function App() {
                                            characters={characters} 
                                            isRunning={isRunning} 
                                            handleClick={handleClick}
-                                           isGameOver={isGameOver}/>}/>
+                                           isGameOver={isGameOver}
+                                           restart={restart}/>}/>
+        <Route path='/scores' element={<Scores/>}/>
       </Routes>
     </div>
     </BrowserRouter>  

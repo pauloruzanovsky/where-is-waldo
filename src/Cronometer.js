@@ -4,14 +4,16 @@ import React, { useState, useEffect } from 'react';
 function Cronometer(props) {
     const [time, setTime] = useState(0);
     let intervalId;
-  
+
     useEffect(() => {
       if (props.isRunning) {
+        setTime(0)
         intervalId = setInterval(() => {
           setTime(time => time + 1);
         }, 10);
       }
-      return () => clearInterval(intervalId);
+      return () => {
+        clearInterval(intervalId)};
     }, [props.isRunning]);
   
     // formatting the time
@@ -22,7 +24,11 @@ function Cronometer(props) {
   
     return (
       <div>
-        <div>{`${minutes}:${seconds}:${milliseconds}`}</div>
+        <div className='time'
+              minutes={minutes}
+              seconds={seconds}
+              milliseconds={milliseconds}>
+          {`${minutes}:${seconds}:${milliseconds}`}</div>
       </div>
     );
   }

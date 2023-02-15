@@ -25,7 +25,7 @@ export default function Home(props) {
                 {characterElements}
             </div>
             <Link to='/main'>
-                <button className='start-button'>Start</button>
+                <button onClick={() => {props.setIsGameOver(false)}} className='start-button'>Start</button>
             </Link>
         </div>
     )

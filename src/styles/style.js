@@ -20,8 +20,8 @@ export const Header = styled.div `
 `
 
 export const Target = styled.div`
-    width: 50px;
-    height: 50px;
+    width: ${props => props.targetWidth}px;
+    height: ${props => props.targetHeight}px;
     border-radius: 50%;
     border: 2px solid #ff8906;
     display: flex;

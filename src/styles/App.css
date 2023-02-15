@@ -28,13 +28,65 @@ body{
 
 }
 
-.courage-box {
-    position: absolute;
-    top: 56%;
-    left: 30%;
-    background: white;
+.end-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    background-color: black;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    border: 1px solid rgb(240, 137, 3);
+    border-radius: 10px;
+    
 }
 
+input {
+    background: rgb(54, 54, 54);
+    border: 0px;
+    border-radius: 5px;
+    padding: 5px;
+    color: white;
+}
+
+form {
+    display: flex;
+    gap: 20px;
+}
+
+.end-modal button {
+    background:#ff8906;
+    border: 0px;
+    color: white;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.end-modal button:hover {
+    background:#faa03a;
+    
+}
+
+.control-buttons {
+    display: flex;
+    gap: 20px;
+}
+
+input:focus {
+    outline: 1px solid #faa03a;
+}
+
+.submit-button[disabled] {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor:not-allowed;
+}
 
 .character-selector {
     border-radius: 5px;
@@ -48,6 +100,81 @@ body{
     border: 1px solid white;
     font-weight: bold; 
 
+}
+
+.scores {
+    margin-top: 200px;
+
+}
+
+  th, td {
+    cursor:default;
+    outline: 1px solid black;
+    padding: 8px;
+    background:#313131
+
+  }
+
+.table-header {
+    position: fixed;
+    top: 168px;
+    display: flex;
+    background: #0f0e17;   
+    width: 218px;
+    padding: 8px;
+    cursor:default;
+}
+
+.rank-header, .name-header {
+    margin-right: 45px;
+}
+
+
+.scores-page > * {
+    color: white !important;
+}
+
+.scores-page {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+
+}
+
+.scores-title { 
+    width: 100%;
+    color: white;
+    margin-top: 131px;
+    background: #0f0e17;
+    font-weight: bold;
+    font-size: 30px;
+    position: fixed;
+    cursor:default;
+}
+
+.scores-header {
+    max-width: 100vw;
+    background: #0f0e17;    
+    color: white;
+    font-family: proxima-nova, sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 131px;
+    z-index: 3;
+}
+
+.score > * {
+width: 60px;
 }
 
 .character-selector:hover {
